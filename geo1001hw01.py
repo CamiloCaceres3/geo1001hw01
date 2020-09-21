@@ -1,32 +1,32 @@
 #-- GEO1001.2020--hw01
 #-- Camilo Caceres
 #-- [532210]
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import random
 import scipy.stats as st
- 
 #Read the xls and make a pandas dataframe
-heatA = pd.read_excel('HEAT - A_final.xls', skiprows=[0,1,2,4])
+heatA = pd.read_excel('data/HEAT - A_final.xls', skiprows=[0,1,2,4])
 heatA = heatA.rename(columns = {'Direction ‚ True': 'Direction', 'Direction ‚ Mag' : 'Direction Mag'} )
 heatA.name = 'HeatA'
-heatB = pd.read_excel('HEAT - B_final.xls', skiprows=[0,1,2,4])
+heatB = pd.read_excel('data/HEAT - B_final.xls', skiprows=[0,1,2,4])
 heatB = heatB.rename(columns = {'Direction ‚ True': 'Direction', 'Direction ‚ Mag' : 'Direction Mag'})
 heatB.name = 'HeatB'
-heatC = pd.read_excel('HEAT - C_final.xls', skiprows=[0,1,2,4])
+heatC = pd.read_excel('data/HEAT - C_final.xls', skiprows=[0,1,2,4])
 heatC = heatC.rename(columns = {'Direction ‚ True': 'Direction', 'Direction ‚ Mag' : 'Direction Mag'})
 heatC.name = 'HeatC'
-heatD = pd.read_excel('HEAT - D_final.xls', skiprows=[0,1,2,4])
+heatD = pd.read_excel('data/HEAT - D_final.xls', skiprows=[0,1,2,4])
 heatD = heatD.rename(columns = {'Direction ‚ True': 'Direction', 'Direction ‚ Mag' : 'Direction Mag'})
 heatD.name = 'HeatD'
-heatE = pd.read_excel('HEAT - E_final.xls', skiprows=[0,1,2,4])
+heatE = pd.read_excel('data/HEAT - E_final.xls', skiprows=[0,1,2,4])
 heatE = heatE.rename(columns = {'Direction ‚ True': 'Direction', 'Direction ‚ Mag' : 'Direction Mag'})
 heatE.name = 'HeatE'
 
 #Get the measures signs of the columns of the data frames.
-headers = pd.read_excel('HEAT - A_final.xls', skiprows=[0,1,2], header =[0,1] )
+headers = pd.read_excel('data/HEAT - A_final.xls', skiprows=[0,1,2], header =[0,1] )
 headers = headers.rename(columns = {'Direction ‚ True': 'Direction', 'Direction ‚ Mag' : 'Direction Mag', 'Unnamed: 1_level_1': chr(176),
                                    '¬∞C': chr(176)+ 'C', '¬∞': chr(176)} )
 headers =headers.columns.tolist()
@@ -59,7 +59,7 @@ def meanstatistics(df):
 
 #Write the mean statistis into a excelfile with each sensor in different excel sheet
 i=0
-with pd.ExcelWriter('meanstatistcs.xlsx') as writer:
+with pd.ExcelWriter('output/meanstatistcs.xlsx') as writer:
     for frame in sensorlist:
         meanstatistics(frame).to_excel(writer, sheet_name= frame.name)
         i+=1
@@ -80,8 +80,8 @@ def histograms(lists, var, bins):
         axes[i].set_xlabel(var+ ' [' + sensorm[var][1]+']')
         axes[i].set_ylabel('Frequency')
         i +=1
-    plt.savefig('../hw01/histogramsT'+ str(bins) +'bins.png')
-    plt.show()
+    plt.savefig('output/histogramsT'+ str(bins) +'bins.png')
+    #plt.show()
 #Make histograms 
 histograms(sensorlist, 'Temperature' , 50)
 histograms(sensorlist, 'Temperature' , 5)
@@ -122,8 +122,8 @@ def plot_accfrequency_polygons(lists,var):
         plt.legend()  
         plt.xlabel('Temperature' + ' [' + sensorm[var][1]+']')
         plt.ylabel('Cumulative Frequency')
-    plt.savefig('../hw01/Cumulative_Frequency_Polygons.png')
-    plt.show()
+    plt.savefig('output/Cumulative_Frequency_Polygons.png')
+    #plt.show()
 #Function to plot the frequency polygon 
 def plot_frequency_polygons(lists,var):
     for frame in lists:
@@ -134,8 +134,8 @@ def plot_frequency_polygons(lists,var):
         plt.legend()  
         plt.xlabel('Temperature' + ' [' + sensorm[var][1]+']')
         plt.ylabel('Frequency')
-    plt.savefig('../hw01/Frequency_Polygons.png')
-    plt.show()
+    plt.savefig('output/Frequency_Polygons.png')
+    #plt.show()
 
 # PLot the cumulative frequency polygon and frequeny polygon
 plot_accfrequency_polygons(sensorlist,'Temperature')
@@ -158,8 +158,8 @@ def box_plot(nam, lists):
         ax.set_title('Box Plot of ' +vari  , fontsize = 30)
         ax.grid(axis = 'y')           
         j+=1
-    plt.savefig('../hw01/Boxplots.png')
-    plt.show()
+    plt.savefig('output/Boxplots.png')
+    #plt.show()
 #Boxplot
 sensorlistA = [heatE, heatD,heatC, heatB, heatA]
 var = ['Temperature', 'Wind Speed','Direction']
@@ -183,8 +183,8 @@ def pmf(lists, var):
         axes[i].set_ylabel('Probability')
         axes[i].set_title('PMF of ' + frame.name)
         i +=1
-    plt.savefig('../hw01/PMF.png')
-    plt.show()
+    plt.savefig('output/PMF.png')
+    #plt.show()
 
 #Plot the pm
 pmf(sensorlist, 'Temperature')
@@ -206,8 +206,8 @@ def pdf1(lists, var):
         axes[i].set_ylabel('Probability')
         axes[i].set_title('PDF of ' + frame.name)
         i +=1
-    plt.savefig('../hw01/PDF.png')
-    plt.show()
+    plt.savefig('output/PDF.png')
+    #plt.show()
     
 #Plot pdf
 pdf1(sensorlist, 'Temperature')
@@ -231,8 +231,8 @@ def cdf(lists, var):
     axes[-1].set_xlabel(var + ' [' + sensorm[var][1]+']')   
     axes[-1].set_ylabel('Probability')
     axes[-1].set_title('CDF of al Sensors')
-    plt.savefig('../hw01/CDF.png')
-    plt.show()
+    plt.savefig('output/CDF.png')
+    #plt.show()
 #Plot CDF
 cdf(sensorlist, 'Temperature')
 
@@ -259,8 +259,8 @@ def pdf_kernel(lists, var):
         axes[i].set_ylabel('Probality')
         axes[i].set_title('PDF of ' + frame.name)
         i +=1
-    plt.savefig('../hw01/wind_speed_kpdf.png')
-    plt.show()
+    plt.savefig('output/wind_speed_kpdf.png')
+    #plt.show()
 
 pdf_kernel(sensorlist, 'Wind Speed')
 
@@ -282,7 +282,7 @@ def corr(lists, var):
     pearson.name = 'Pearson'
     spearman = df.corr(method = 'spearman')
     spearman.name = 'Spearman'
-    with pd.ExcelWriter('corr'+var+'.xlsx') as writer:
+    with pd.ExcelWriter('output/corr'+var+'.xlsx') as writer:
         pearson.to_excel(writer, sheet_name= var+' Pearson')
         spearman.to_excel(writer, sheet_name= var+' Spearman')
     return [pearson, spearman]
@@ -315,8 +315,8 @@ def corrplot(lists, var):
         plt.ylabel('Correlation')
         plt.title('Correlation Scatter Plot for ' +var)
         plt.legend()
-        plt.savefig('../hw01/scatter'+var+'.png')
-    plt.show()
+        plt.savefig('output/scatter'+var+'.png')
+    #plt.show()
 #Plots the correlation scatter plot
 corrplot(corr(sensorlist,'Temperature'),'Temperature')
 corrplot(corr(sensorlist,'WBGT'), 'WBGT')
@@ -349,7 +349,7 @@ def cdf_all(lists ,col):
                 axes[j].set_title('CDF of ' + var + ' [' + sensorm[var][1]+']')
                 i +=1    
             j +=1
-    fig.savefig('../hw01/cdf4.png')
+    fig.savefig('output/cdf4.png')
 #Plots cdf
 col = ['Temperature', 'Wind Speed']
 cdf_all(sensorlist, col)
@@ -375,7 +375,7 @@ def ic_all(lists, col):
 #Calculates the ic
 col = ['Temperature', 'Wind Speed']
 intconf  = ic_all(sensorlist, col)
-intconf.to_csv("confidence_intervals.csv")
+intconf.to_csv("output/confidence_intervals.csv")
 intconf
 
 resdf = pd.DataFrame(columns= ['Sensor1','Sensor2', 'Variable', 't value', 'p value'])
@@ -404,7 +404,7 @@ bat = test(heatB, heatA, 'Temperature',resdf)
 resdf = resdf.append(bat)
 baw = test(heatB, heatA, 'Wind Speed',resdf)
 resdf = resdf.append(baw)
-resdf.to_csv("ttest.csv")
+resdf.to_csv("output/ttest.csv")
 resdf
 
 #Bonus Question
